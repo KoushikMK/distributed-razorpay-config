@@ -1,7 +1,7 @@
 spring:
   threads:
-    virtuals:
-     enabled: true
+    virtual:
+      enabled: true
   jpa:
     hibernate:
       ddl-auto: update
@@ -10,35 +10,28 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    username: postgres
-    password: Koushik@1234
+    hikari:
+      maximum-pool-size: 50
+    username: anuj
+    password: password
     driver-class-name: org.postgresql.Driver
   data:
     redis:
       host: localhost
       port: 6379
   kafka:
-    listener:
-      ack-mode: manual
     bootstrap-servers: localhost:29092
     producer:
-      acks: all
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      properties:
-        enable.idempotence: true
-        max.in.flight.requests.per.connection: 5
-        retries: 3
-        spring.json.add.type.headers: false
     consumer:
-      group-id: razorpay-monolith
+      group-id: razorpay-clone-group
       auto-offset-reset: earliest
-      enable-auto-commit: false
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "com.coding.razorpay.*"
-        
+
 eureka:
   client:
     serviceUrl:
@@ -48,15 +41,18 @@ eureka:
     hostname: localhost
 
 management:
-  endpoint:
+  endpoints:
     web:
       exposure:
         include: health,info
-
+        
 logging:
   level:
-  org.apache.kafka.clients: WARN
-  org.apache.kafka.common: WARN
+    org.apache.kafka.clients: WARN
+    org.apache.kafka.common: WARN
+    zipkin2.reporter: DEBUG
+    org.springframework.boot.zipkin: DEBUG
+    io.micrometer.tracing: DEBUG
 
 app:
   kafka:
