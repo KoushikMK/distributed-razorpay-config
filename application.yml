@@ -10,7 +10,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-     hikari:
+    hikari:
       maximum-pool-size: 10
       minimum-idle: 2
     username: koushik
